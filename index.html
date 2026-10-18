@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Games Hub</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: light-dark(#f4f5f7, #101216);
+    --surface: light-dark(#ffffff, #181b21);
+    --surface-2: light-dark(#f8f9fb, #20242c);
+    --text: light-dark(#17191d, #f4f6f8);
+    --muted: light-dark(#68707c, #a9b0bb);
+    --border: light-dark(#e3e6eb, #303640);
+    --accent: light-dark(#315efb, #7f9cff);
+    --accent-soft: light-dark(#edf1ff, #222b4a);
+    --shadow: 0 8px 28px rgba(0,0,0,.08);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); }
+  .app { min-height: 100vh; background: var(--bg); }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 28px 18px 50px; }
+  header { display:flex; justify-content:space-between; gap:16px; align-items:flex-end; margin-bottom:24px; }
+  h1 { margin:0; font-size:32px; letter-spacing:-1px; }
+  .subtitle { margin:6px 0 0; color:var(--muted); font-size:15px; }
+  .progress { min-width:150px; text-align:right; }
+  .progress strong { font-size:18px; }
+  .bar { height:8px; margin-top:7px; border-radius:999px; background:var(--border); overflow:hidden; }
+  .fill { height:100%; width:0%; background:var(--accent); transition:width .2s; }
+  .toolbar { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:22px; }
+  button, input { font:inherit; }
+  .search { flex:1; min-width:200px; padding:11px 14px; border:1px solid var(--border); border-radius:12px; background:var(--surface); color:var(--text); outline:none; }
+  .search:focus { border-color:var(--accent); }
+  .btn { border:1px solid var(--border); background:var(--surface); color:var(--text); padding:10px 13px; border-radius:11px; cursor:pointer; }
+  .btn:hover { border-color:var(--accent); }
+  .section { margin-top:24px; }
+  .section h2 { font-size:13px; text-transform:uppercase; letter-spacing:1.2px; color:var(--muted); margin:0 0 10px 2px; }
+  .grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; }
+  .card { display:grid; grid-template-columns:48px 1fr auto; align-items:center; gap:13px; padding:14px; border:1px solid var(--border); border-radius:16px; background:var(--surface); box-shadow:var(--shadow); transition:transform .12s, opacity .15s; }
+  .card:hover { transform:translateY(-1px); }
+  .icon { width:48px; height:48px; border-radius:14px; display:grid; place-items:center; background:var(--accent-soft); font-size:24px; }
+  .name { font-weight:700; font-size:17px; }
+  .desc { color:var(--muted); font-size:12px; margin-top:3px; }
+  .play { display:inline-flex; align-items:center; gap:6px; text-decoration:none; background:var(--accent); color:white; padding:9px 12px; border-radius:10px; font-weight:700; font-size:13px; }
+  .done { display:flex; align-items:center; gap:7px; margin-top:7px; color:var(--muted); font-size:12px; cursor:pointer; user-select:none; }
+  .done input { accent-color:var(--accent); width:15px; height:15px; }
+  .hidden { display:none; }
+  .empty { padding:20px; text-align:center; color:var(--muted); border:1px dashed var(--border); border-radius:14px; }
+  .footer { margin-top:30px; color:var(--muted); font-size:12px; text-align:center; line-height:1.5; }
+  @media (max-width:650px) {
+    .wrap { padding:22px 13px 40px; }
+    header { align-items:flex-start; flex-direction:column; }
+    .progress { width:100%; text-align:left; }
+    h1 { font-size:29px; }
+    .grid { grid-template-columns:1fr; }
+    .card { grid-template-columns:44px 1fr auto; padding:12px; }
+    .icon { width:44px; height:44px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <main class="wrap">
+    <header>
+      <div>
+        <h1>🎮 Daily Games</h1>
+        <p class="subtitle">One place for all your daily puzzles.</p>
+      </div>
+      <div class="progress">
+        <strong id="progressText">0 / 9 complete</strong>
+        <div class="bar"><div class="fill" id="progressFill"></div></div>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <input class="search" id="search" placeholder="Search games…" aria-label="Search games">
+      <button class="btn" id="reset">Reset today</button>
+    </div>
+
+    <section class="section" data-category="Trivia">
+      <h2>Trivia & Knowledge</h2>
+      <div class="grid">
+        <article class="card" data-name="Goatle" data-key="goatle"><div class="icon">🐐</div><div><div class="name">Goatle</div><div class="desc">Daily top-10 trivia</div><label class="done"><input type="checkbox"> Done today</label></div><a class="play" href="https://goatle.io/" target="_blank" rel="noopener">Play ↗</a></article>
+        <article class="card" data-name="Krillion" data-key="krillion"><div class="icon">🦐</div><div><div class="name">Krillion</div><div class="desc">Open-answer daily trivia</div><label class="done"><input type="checkbox"> Done today</label></div><a class="play" href="https://krillion.io/" target="_blank" rel="noopener">Play ↗</a></article>
+        <article class="card" data-name="Historicale" data-key="historicale"><div class="icon">🏛️</div><div><div class="name">Historicale</div><div class="desc">Put historical events in order</div><label class="done"><input type="checkbox"> Done today</label></div><a class="play" href="https://historicale.com/" target="_blank" rel="noopener">Play ↗</a></article>
+      </div>
+    </section>
+
+    <section class="section" data-category="Geography">
+      <h2>Geography</h2>
+      <div class="grid">
+        <article class="card" data-name="Farflung" data-key="farflung"><div class="icon">🌎</div><div><div class="name">Farflung</div><div class="desc">Find obscure countries on the map</div><label class="done"><input type="checkbox"> Done today</label></div><a class="play" href="https://farflung.game/" target="_blank" rel="noopener">Play ↗</a></article>
+        <article class="card" data-name="MapTap" data-key="maptap"><div class="icon">📍</div><div><div class="name">MapTap</div><div class="desc">Pin locations on a 3D globe</div><label class="done"><input type="checkbox"> Done today</label></div><a class="play" href="https://maptap.gg/" target="_self">Open MapTap ↗</a></article>
+        <article class="card" data-name="Travle Earth" data-key="travle"><div class="icon">🗺️</div><div><div class="name">Travle Earth</div><div class="desc">Connect countries using the shortest route</div><label class="done"><input type="checkbox"> Done today</label></div><a class="play" href="https://travle.earth/" target="_blank" rel="noopener">Play ↗</a></article>
+      </div>
+    </section>
+
+    <section class="section" data-category="Words & Puzzles">
+      <h2>Words & Puzzles</h2>
+      <div class="grid">
+        <article class="card" data-name="Wordle" data-key="wordle"><div class="icon">🟩</div><div><div class="name">Wordle</div><div class="desc">The classic daily word puzzle</div><label class="done"><input type="checkbox"> Done today</label></div><a class="play" href="https://www.nytimes.com/games/wordle/index.html" target="_blank" rel="noopener">Play ↗</a></article>
+        <article class="card" data-name="Cutle" data-key="cutle"><div class="icon">✂️</div><div><div class="name">Cutle</div><div class="desc">Cut the shape as close to 50/50 as possible</div><label class="done"><input type="checkbox"> Done today</label></div><a class="play" href="https://cutle.org/" target="_blank" rel="noopener">Play ↗</a></article>
+        <article class="card" data-name="Magnitudle" data-key="magnitudle"><div class="icon">📏</div><div><div class="name">Magnitudle</div><div class="desc">Estimate real-world scale</div><label class="done"><input type="checkbox"> Done today</label></div><a class="play" href="https://magnitudle.com/" target="_blank" rel="noopener">Play ↗</a></article>
+      </div>
+    </section>
+
+    <p class="footer">Your completed-game checkboxes are saved only in this browser. The game buttons open the original game sites.</p>
+  </main>
+</div>
+<script>
+(function () {
+  const cards = [...document.querySelectorAll('.card')];
+  const today = new Date().toISOString().slice(0,10);
+  const storageKey = 'daily-games-' + today;
+  let state = JSON.parse(localStorage.getItem(storageKey) || '{}');
+  const search = document.getElementById('search');
+  const progressText = document.getElementById('progressText');
+  const progressFill = document.getElementById('progressFill');
+
+  cards.forEach(card => {
+    const box = card.querySelector('input');
+    box.checked = !!state[card.dataset.key];
+    box.addEventListener('change', () => {
+      state[card.dataset.key] = box.checked;
+      localStorage.setItem(storageKey, JSON.stringify(state));
+      updateProgress();
+    });
+  });
+
+  function updateProgress() {
+    const done = cards.filter(c => c.querySelector('input').checked).length;
+    progressText.textContent = done + ' / ' + cards.length + ' complete';
+    progressFill.style.width = (done / cards.length * 100) + '%';
+  }
+
+  search.addEventListener('input', () => {
+    const q = search.value.trim().toLowerCase();
+    cards.forEach(card => {
+      card.classList.toggle('hidden', q && !card.dataset.name.toLowerCase().includes(q));
+    });
+    document.querySelectorAll('.section').forEach(section => {
+      const visible = [...section.querySelectorAll('.card')].some(c => !c.classList.contains('hidden'));
+      section.classList.toggle('hidden', !visible);
+    });
+  });
+
+  document.getElementById('reset').addEventListener('click', () => {
+    if (!confirm("Reset today's completed games?")) return;
+    state = {};
+    localStorage.setItem(storageKey, JSON.stringify(state));
+    cards.forEach(c => c.querySelector('input').checked = false);
+    updateProgress();
+  });
+
+  updateProgress();
+})();
+</script>
+</body>
+</html>
